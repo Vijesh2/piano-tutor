@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Piano Tutor",
+    "slug": "piano-tutor",
+    "version": "0.1.0",
+    "orientation": "default",
+    "scheme": "pianotutor",
+    "userInterfaceStyle": "light",
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "shortName": "Piano Tutor",
+      "themeColor": "#f7f1e5",
+      "backgroundColor": "#f7f1e5"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

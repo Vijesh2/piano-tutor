@@ -1,0 +1,9 @@
+{
+  "name": "Piano Tutor",
+  "short_name": "Piano Tutor",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f1e5",
+  "theme_color": "#f7f1e5",
+  "description": "A guided piano tutor for practicing with a real electronic piano."
+}
