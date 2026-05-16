@@ -24,6 +24,7 @@ The static site is emitted to `dist/` and can be hosted by Vercel, Netlify, GitH
 This repo includes Railway config as code:
 
 - `railway.json` tells Railway to use Railpack and run `npm run build`.
+- Railway starts the static server with `npx serve dist --listen tcp://0.0.0.0:$PORT`.
 - `Staticfile` tells Railway's static file server to serve `dist/`.
 - `.node-version` pins Node to `20.19.4`, matching the Expo/React Native requirement.
 
