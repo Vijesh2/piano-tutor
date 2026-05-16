@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node node_modules/expo/bin/cli start",
     "web": "node node_modules/expo/bin/cli start --web",
+    "build": "npm run export:web",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
     "export:web": "node node_modules/expo/bin/cli export --platform web && node scripts/prepare-static-routes.mjs"
   },
