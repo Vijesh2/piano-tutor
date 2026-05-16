@@ -23,6 +23,12 @@ export function generateStaticParams() {
 export default function LessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const lesson = useMemo(() => (id ? getLessonById(id) : undefined), [id]);
+  const lessonIndex = useMemo(
+    () => (lesson ? lessons.findIndex((item) => item.id === lesson.id) : -1),
+    [lesson],
+  );
+  const previousLesson = lessonIndex > 0 ? lessons[lessonIndex - 1] : undefined;
+  const nextLesson = lessonIndex >= 0 && lessonIndex < lessons.length - 1 ? lessons[lessonIndex + 1] : undefined;
   const [progress, setProgress] = useState<ProgressRecord | undefined>();
 
   useEffect(() => {
@@ -53,7 +59,10 @@ export default function LessonScreen() {
   return (
     <Screen>
       <Stack.Screen options={{ title: lesson.title }} />
-      <Link href="/" style={styles.backLink}>Back to lessons</Link>
+      <View style={styles.topNav}>
+        <Link href="/" style={styles.backLink}>Back to lessons</Link>
+        <LessonPager previousLesson={previousLesson} nextLesson={nextLesson} compact />
+      </View>
 
       <View style={styles.header}>
         <View style={styles.headerCopy}>
@@ -69,6 +78,8 @@ export default function LessonScreen() {
           </Text>
         </View>
       </View>
+
+      <LessonPager previousLesson={previousLesson} nextLesson={nextLesson} />
 
       <PianoKeyboardGuide guide={lesson.keyboardGuide} />
 
@@ -118,17 +129,63 @@ export default function LessonScreen() {
           </View>
         </View>
       </View>
+
+      <LessonPager previousLesson={previousLesson} nextLesson={nextLesson} />
     </Screen>
   );
 }
 
+type LessonPagerProps = {
+  previousLesson?: { id: string; title: string };
+  nextLesson?: { id: string; title: string };
+  compact?: boolean;
+};
+
+function LessonPager({ previousLesson, nextLesson, compact = false }: LessonPagerProps) {
+  return (
+    <View style={[styles.pager, compact && styles.compactPager]}>
+      {previousLesson ? (
+        <Link href={`/lesson/${previousLesson.id}`} asChild>
+          <Button label={compact ? "Back" : `Back: ${previousLesson.title}`} tone="secondary" />
+        </Link>
+      ) : (
+        <Button label="Back" tone="quiet" disabled />
+      )}
+
+      {nextLesson ? (
+        <Link href={`/lesson/${nextLesson.id}`} asChild>
+          <Button label={compact ? "Forward" : `Forward: ${nextLesson.title}`} />
+        </Link>
+      ) : (
+        <Button label="Forward" tone="quiet" disabled />
+      )}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  topNav: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 16,
+    marginBottom: 18,
+  },
   backLink: {
     color: "#2f4636",
     fontSize: 16,
     fontWeight: "800",
-    marginBottom: 18,
     textDecorationLine: "none",
+  },
+  pager: {
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 28,
+  },
+  compactPager: {
+    marginBottom: 0,
   },
   header: {
     flexDirection: "row",
